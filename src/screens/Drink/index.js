@@ -1,15 +1,24 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
+import YouTube from 'react-native-youtube';
+import queryString from 'query-string';
+import {YOUTUBE_API_KEY} from 'react-native-dotenv';
 
 export default function Drink({route, navigation}) {
   const {item} = route.params;
 
   const [data, setData] = useState([]);
 
+  const name = 'Margarita';
+  const [videoId, setVideoId] = useState();
+  const YOUTUBE_API = 'https://www.googleapis.com/youtube/v3/search';
+
   useEffect(() => {
     navigation.setOptions({title: item.strDrink});
     fetch(
-      `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${item.idDrink}`,
+      `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${
+        item.idDrink
+      }`,
     )
       .then(response => response.json())
       .then(json => {
@@ -19,9 +28,28 @@ export default function Drink({route, navigation}) {
       .catch(error => console.error(error));
   }, [item.strDrink, item.idDrink, data.strDrinkThumb, navigation]);
 
+  useEffect(() => {
+    if (!data) {
+      return;
+    }
+
+    const params = {
+      key: YOUTUBE_API_KEY,
+      part: 'snippet',
+      type: 'video',
+      maxResults: 1,
+      q: `${data.strDrink} cocktail recipe`,
+    };
+
+    fetch(`${YOUTUBE_API}?${queryString.stringify(params)}`)
+      .then(response => response.json())
+      .then(json => setVideoId(json.items[0].id.videoId))
+      .catch(error => console.error(error));
+  }, [data]);
+
   return (
     <View style={styles.container}>
-      <Text style={styles.category}>Type: {data.strCategory}</Text>
+      <Text style={styles.category}>Type: {data.strDrink}</Text>
       <Image style={styles.image} source={{uri: data.strDrinkThumb}} />
       <Text style={styles.instructions}>How to : {data.strInstructions}</Text>
       {data.strAlcoholic === 'Non alcoholic' && (
@@ -32,6 +60,8 @@ export default function Drink({route, navigation}) {
           }}
         />
       )}
+      {!videoId && <Text>Loading video</Text>}
+      {videoId && <YouTube videoId={videoId} style={styles.video} />}
     </View>
   );
 }
@@ -65,5 +95,9 @@ const styles = StyleSheet.create({
     width: '50%',
     aspectRatio: 1,
     marginBottom: 20,
+  },
+  video: {
+    alignSelf: 'stretch',
+    height: 300,
   },
 });
