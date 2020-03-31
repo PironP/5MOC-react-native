@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-               BuildableName = "projetReactNative-tvOS.app"
-               BlueprintName = "projetReactNative-tvOS"
-               ReferencedContainer = "container:projetReactNative.xcodeproj">
+               BuildableName = "CocktailApp-tvOS.app"
+               BlueprintName = "CocktailApp-tvOS"
+               ReferencedContainer = "container:CocktailApp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E48F1E0B4A5D006451C7"
-               BuildableName = "projetReactNative-tvOSTests.xctest"
-               BlueprintName = "projetReactNative-tvOSTests"
-               ReferencedContainer = "container:projetReactNative.xcodeproj">
+               BuildableName = "CocktailApp-tvOSTests.xctest"
+               BlueprintName = "CocktailApp-tvOSTests"
+               ReferencedContainer = "container:CocktailApp.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "projetReactNative-tvOS.app"
-            BlueprintName = "projetReactNative-tvOS"
-            ReferencedContainer = "container:projetReactNative.xcodeproj">
+            BuildableName = "CocktailApp-tvOS.app"
+            BlueprintName = "CocktailApp-tvOS"
+            ReferencedContainer = "container:CocktailApp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "projetReactNative-tvOS.app"
-            BlueprintName = "projetReactNative-tvOS"
-            ReferencedContainer = "container:projetReactNative.xcodeproj">
+            BuildableName = "CocktailApp-tvOS.app"
+            BlueprintName = "CocktailApp-tvOS"
+            ReferencedContainer = "container:CocktailApp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

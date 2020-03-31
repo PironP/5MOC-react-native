@@ -35,12 +35,12 @@ android_library(
 
 android_build_config(
     name = "build_config",
-    package = "com.projetreactnative",
+    package = "com.cocktailapp",
 )
 
 android_resource(
     name = "res",
-    package = "com.projetreactnative",
+    package = "com.cocktailapp",
     res = "src/main/res",
 )
 
