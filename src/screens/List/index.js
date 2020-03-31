@@ -1,20 +1,20 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {View, StyleSheet, FlatList} from 'react-native';
-import Breed from '../../components/Breed';
+import Breed from '../../components/Drink';
 
 export default function List({navigation}) {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch('https://api.thecatapi.com/v1/breeds')
+    fetch('https://www.thecocktaildb.com/api/json/v1/1/search.php?f=a')
       .then(response => response.json())
-      .then(json => setData(json))
+      .then(json => setData(json.drinks))
       .catch(error => console.error(error));
   }, []);
 
   const handlePress = useCallback(
     item => {
-      navigation.navigate('Cat', {item});
+      navigation.navigate('Drink', {item});
     },
     [navigation],
   );
@@ -24,7 +24,7 @@ export default function List({navigation}) {
       <FlatList
         data={data}
         renderItem={values => <Breed {...values} handlePress={handlePress} />}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.idDrink}
       />
     </View>
   );
