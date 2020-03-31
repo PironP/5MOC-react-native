@@ -1,40 +1,36 @@
-import React, {useCallback} from 'react';
-import {View, Text, StyleSheet, Platform, Button} from 'react-native';
-import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
+import React, {useState, useEffect} from 'react';
+import {View, Text, StyleSheet} from 'react-native';
+import YouTube from 'react-native-youtube';
+import queryString from 'query-string';
+import {YOUTUBE_API_KEY} from 'react-native-dotenv';
 
-export default function Home({navigation}) {
-  const handlePress = useCallback(() => {
-    navigation.navigate('List');
-  }, [navigation]);
+export default function Home() {
+  const name = 'Acd';
+  const [videoId, setVideoId] = useState();
+  const YOUTUBE_API = 'https://www.googleapis.com/youtube/v3/search';
+
+  useEffect(() => {
+    const params = {
+      key: YOUTUBE_API_KEY,
+      part: 'snippet',
+      type: 'video',
+      maxResults: 1,
+      q: `${name} cocktail recipe`,
+    };
+
+    fetch(`${YOUTUBE_API}?${queryString.stringify(params)}`)
+      .then(response => response.json())
+      .then(json => setVideoId(json.items[0].id.videoId))
+      .catch(error => console.error(error));
+  }, []);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.welcome}>Hello world</Text>
-      <Text style={styles.platformText}>{platformText}</Text>
-      <Button onPress={handlePress} title="Go to list" />
-      <MapView
-        style={styles.map}
-        provider={PROVIDER_GOOGLE}
-        initialRegion={{
-          latitude: 37.78825,
-          longitude: -122.4324,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
-      />
+      {!videoId && <Text>Loading video</Text>}
+      {videoId && <YouTube videoId={videoId} style={styles.video} />}
     </View>
   );
 }
-
-const platformText = Platform.select({
-  ios: 'iOS',
-  android: 'Android',
-});
-
-const platformTextColor = Platform.select({
-  ios: '#ff0000',
-  android: '#00ff00',
-});
 
 const styles = StyleSheet.create({
   container: {
@@ -42,18 +38,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  platformText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: platformTextColor,
-  },
-  map: {
-    width: '100%',
+  video: {
+    alignSelf: 'stretch',
     height: 300,
   },
 });
