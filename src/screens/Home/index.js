@@ -1,11 +1,16 @@
-import React from 'react';
-import {View, Text, StyleSheet, Platform} from 'react-native';
+import React, {useCallback} from 'react';
+import {View, Text, StyleSheet, Platform, Button} from 'react-native';
 
-export default function Home() {
+export default function Home({navigation}) {
+  const handlePress = useCallback(() => {
+    navigation.navigate('List');
+  }, [navigation]);
+
   return (
     <View style={styles.container}>
       <Text style={styles.welcome}>Hello world</Text>
       <Text style={styles.platformText}>{platformText}</Text>
+      <Button onPress={handlePress} title="Go to list" />
     </View>
   );
 }
