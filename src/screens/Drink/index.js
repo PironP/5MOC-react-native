@@ -2,6 +2,7 @@ import React from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
 import YouTube from 'react-native-youtube';
 import {useYoutubeVideo} from '../../hooks/useYoutubeVideo';
+import {YOUTUBE_API_KEY} from 'react-native-dotenv';
 
 export default function Drink({route, navigation}) {
   const {
@@ -43,7 +44,13 @@ export default function Drink({route, navigation}) {
       )}
       <View style={styles.videoContainer}>
         {!videoId && <Text style={styles.content}>Loading video</Text>}
-        {videoId && <YouTube videoId={videoId} style={styles.video} />}
+        {videoId && (
+          <YouTube
+            apiKey={YOUTUBE_API_KEY}
+            videoId={videoId}
+            style={styles.video}
+          />
+        )}
       </View>
     </View>
   );
