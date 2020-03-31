@@ -1,5 +1,5 @@
 import React, {useCallback} from 'react';
-import {View, Text, StyleSheet, Platform, Button} from 'react-native';
+import {View, Text, Image, StyleSheet, Platform, Button} from 'react-native';
 
 export default function Home({navigation}) {
   const handlePress = useCallback(() => {
@@ -8,9 +8,16 @@ export default function Home({navigation}) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.welcome}>Hello world</Text>
+      <Text style={styles.welcome}>Cockt'app</Text>
+      <Image
+        style={styles.image}
+        source={{
+          uri:
+            'https://www.stickpng.com/assets/images/587e337f9686194a55adab7c.png',
+        }}
+      />
       <Text style={styles.platformText}>{platformText}</Text>
-      <Button onPress={handlePress} title="Go to list" />
+      <Button onPress={handlePress} title="Discover our cocktails" />
     </View>
   );
 }
@@ -35,6 +42,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
+  },
+  image: {
+    width: '50%',
+    aspectRatio: 1,
+    resizeMode: 'contain',
   },
   platformText: {
     fontSize: 24,
