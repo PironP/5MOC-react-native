@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {View, StyleSheet, FlatList} from 'react-native';
-import Breed from '../../components/Drink';
+import Drink from '../../components/Drink';
 
 export default function List({navigation}) {
   const [data, setData] = useState([]);
@@ -23,7 +23,7 @@ export default function List({navigation}) {
     <View style={styles.container}>
       <FlatList
         data={data}
-        renderItem={values => <Breed {...values} handlePress={handlePress} />}
+        renderItem={values => <Drink {...values} handlePress={handlePress} />}
         keyExtractor={item => item.idDrink}
       />
     </View>
