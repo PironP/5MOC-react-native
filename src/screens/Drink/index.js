@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import {View, Text, StyleSheet, Image, FlatList} from 'react-native';
 import YouTube from 'react-native-youtube';
 import queryString from 'query-string';
 import {YOUTUBE_API_KEY} from 'react-native-dotenv';
@@ -8,25 +8,28 @@ export default function Drink({route, navigation}) {
   const {item} = route.params;
 
   const [data, setData] = useState([]);
+  const [ingredients, setIngredients] = useState([]);
 
-  const name = 'Margarita';
   const [videoId, setVideoId] = useState();
   const YOUTUBE_API = 'https://www.googleapis.com/youtube/v3/search';
 
   useEffect(() => {
     navigation.setOptions({title: item.strDrink});
     fetch(
-      `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${
-        item.idDrink
-      }`,
+      `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${item.idDrink}`,
     )
       .then(response => response.json())
       .then(json => {
-        console.log(('rest', json.drinks[0]));
         setData(json.drinks[0]);
+        const drink = Object.entries(json.drinks[0]);
+        setIngredients(
+          Object(drink)
+            .filter(value => value[0].includes('strIngredient') && value[1])
+            .map(value => value[1]),
+        );
       })
       .catch(error => console.error(error));
-  }, [item.strDrink, item.idDrink, data.strDrinkThumb, navigation]);
+  }, [item.strDrink, item.idDrink, setIngredients, navigation]);
 
   useEffect(() => {
     if (!data) {
@@ -52,6 +55,13 @@ export default function Drink({route, navigation}) {
       <Text style={styles.category}>Type: {data.strDrink}</Text>
       <Image style={styles.image} source={{uri: data.strDrinkThumb}} />
       <Text style={styles.instructions}>How to : {data.strInstructions}</Text>
+      <Text style={styles.title}>Ingredients :</Text>
+      <FlatList
+        style={styles.list}
+        data={ingredients}
+        renderItem={({item}) => <Text style={styles.ingredient}>{item}</Text>}
+        keyExtractor={ingredient => ingredient}
+      />
       {data.strAlcoholic === 'Non alcoholic' && (
         <Image
           style={styles.warning}
@@ -77,12 +87,23 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 20,
   },
+  title: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
   instructions: {
     backgroundColor: 'rgb(225, 225, 225)',
     width: '80%',
     padding: 10,
     marginBottom: 20,
     borderRadius: 5,
+  },
+  list: {
+    width: '80%',
+  },
+  ingredient: {
+    fontSize: 14,
+    marginBottom: 5,
   },
   warning: {
     width: '30%',
