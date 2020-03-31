@@ -1,5 +1,6 @@
 import React, {useCallback} from 'react';
 import {View, Text, StyleSheet, Platform, Button} from 'react-native';
+import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 
 export default function Home({navigation}) {
   const handlePress = useCallback(() => {
@@ -11,6 +12,16 @@ export default function Home({navigation}) {
       <Text style={styles.welcome}>Hello world</Text>
       <Text style={styles.platformText}>{platformText}</Text>
       <Button onPress={handlePress} title="Go to list" />
+      <MapView
+        style={styles.map}
+        provider={PROVIDER_GOOGLE}
+        initialRegion={{
+          latitude: 37.78825,
+          longitude: -122.4324,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }}
+      />
     </View>
   );
 }
@@ -40,5 +51,9 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: platformTextColor,
+  },
+  map: {
+    width: '100%',
+    height: 300,
   },
 });
