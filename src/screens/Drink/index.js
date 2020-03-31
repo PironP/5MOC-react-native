@@ -1,70 +1,39 @@
-import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, Image, FlatList} from 'react-native';
+import React from 'react';
+import {View, Text, StyleSheet, Image} from 'react-native';
 import YouTube from 'react-native-youtube';
-import queryString from 'query-string';
-import {YOUTUBE_API_KEY} from 'react-native-dotenv';
+import {useYoutubeVideo} from '../../hooks/useYoutubeVideo';
 
 export default function Drink({route, navigation}) {
-  const {item} = route.params;
+  const {
+    strDrink: cocktailName,
+    strDrinkThumb,
+    strInstructions,
+    strAlcoholic,
+    ...item
+  } = route.params.item;
 
-  const [data, setData] = useState([]);
-  const [ingredients, setIngredients] = useState([]);
+  const videoId = useYoutubeVideo(cocktailName);
 
-  const [videoId, setVideoId] = useState();
-  const YOUTUBE_API = 'https://www.googleapis.com/youtube/v3/search';
+  const ingredients = Object.entries(item)
+    .filter(([key, value]) => key.includes('strIngredient') && value)
+    .map(([, value]) => value);
 
-  useEffect(() => {
-    navigation.setOptions({title: item.strDrink});
-    fetch(
-      `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${
-        item.idDrink
-      }`,
-    )
-      .then(response => response.json())
-      .then(json => {
-        setData(json.drinks[0]);
-        const drink = Object.entries(json.drinks[0]);
-        setIngredients(
-          Object(drink)
-            .filter(value => value[0].includes('strIngredient') && value[1])
-            .map(value => value[1]),
-        );
-      })
-      .catch(error => console.error(error));
-  }, [item.strDrink, item.idDrink, setIngredients, navigation]);
-
-  useEffect(() => {
-    if (!data) {
-      return;
-    }
-
-    const params = {
-      key: YOUTUBE_API_KEY,
-      part: 'snippet',
-      type: 'video',
-      maxResults: 1,
-      q: `${data.strDrink} cocktail recipe`,
-    };
-
-    fetch(`${YOUTUBE_API}?${queryString.stringify(params)}`)
-      .then(response => response.json())
-      .then(json => setVideoId(json.items[0].id.videoId))
-      .catch(error => console.error(error));
-  }, [data]);
+  navigation.setOptions({title: cocktailName});
 
   return (
     <View style={styles.container}>
-      <Text style={styles.category}>Type: {data.strDrink}</Text>
-      <Image style={styles.image} source={{uri: data.strDrinkThumb}} />
-      <Text style={styles.instructions}>How to : {data.strInstructions}</Text>
-      <Text style={styles.title}>Ingredients :</Text>
-      <FlatList
-        style={styles.list}
-        data={ingredients}
-        renderItem={({item}) => <Text style={styles.ingredient}>{item}</Text>}
-        keyExtractor={ingredient => ingredient}
-      />
-      {data.strAlcoholic === 'Non alcoholic' && (
+      <Image style={styles.image} source={{uri: strDrinkThumb}} />
+      <View style={styles.textContainer}>
+        <Text style={styles.title}>How to</Text>
+        <Text style={styles.content}>{strInstructions}</Text>
+        <Text style={styles.title}>Ingredients</Text>
+        <Text style={styles.content}>
+          {ingredients.length > 0
+            ? ingredients.reduce((acc, cur) => `${acc} ${cur},`).slice(0, -1)
+            : 'No ingredient'}
+        </Text>
+      </View>
+      {strAlcoholic === 'Non alcoholic' && (
         <Image
           style={styles.warning}
           source={{
@@ -72,8 +41,10 @@ export default function Drink({route, navigation}) {
           }}
         />
       )}
-      {!videoId && <Text>Loading video</Text>}
-      {videoId && <YouTube videoId={videoId} style={styles.video} />}
+      <View style={styles.videoContainer}>
+        {!videoId && <Text style={styles.content}>Loading video</Text>}
+        {videoId && <YouTube videoId={videoId} style={styles.video} />}
+      </View>
     </View>
   );
 }
@@ -82,29 +53,24 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    marginTop: 20,
+    backgroundColor: 'rgb(245, 245, 245)',
   },
-  category: {
-    fontSize: 18,
-    marginBottom: 20,
+  textContainer: {
+    backgroundColor: 'rgb(70,49,104)',
+    width: '100%',
+    padding: 20,
+    paddingBottom: 10,
   },
   title: {
+    color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
+    marginBottom: 10,
   },
-  instructions: {
-    backgroundColor: 'rgb(225, 225, 225)',
-    width: '80%',
-    padding: 10,
-    marginBottom: 20,
-    borderRadius: 5,
-  },
-  list: {
-    width: '80%',
-  },
-  ingredient: {
+  content: {
+    color: 'white',
     fontSize: 14,
-    marginBottom: 5,
+    marginBottom: 10,
   },
   warning: {
     width: '30%',
@@ -116,10 +82,20 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     width: '50%',
     aspectRatio: 1,
+    marginTop: 20,
     marginBottom: 20,
   },
+  videoContainer: {
+    backgroundColor: 'black',
+    width: '100%',
+    flex: 1,
+    paddingTop: 20,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   video: {
-    alignSelf: 'stretch',
-    height: 300,
+    width: '80%',
+    height: 200,
   },
 });
