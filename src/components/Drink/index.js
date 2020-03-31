@@ -1,15 +1,21 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 
 export default function Drink({item, handlePress}) {
-  const {strDrink, strInstructions, strAlcoholic} = item;
+  const {strDrink, strInstructions, strAlcoholic, strDrinkThumb} = item;
 
   return (
     <TouchableOpacity onPress={() => handlePress(item)}>
       <View style={styles.container}>
-        <Text style={styles.name}>{strDrink}</Text>
-        <Text style={styles.instructions}>{strInstructions}</Text>
-        <Text style={styles.info}>{strAlcoholic}</Text>
+        <Image style={styles.image} source={{uri: strDrinkThumb}} />
+        <View style={styles.textContainer}>
+          <Text style={styles.name}>{strDrink}</Text>
+          <Text style={styles.instructions}>
+            {strInstructions.substring(0, 100)}
+            {strInstructions.length > 100 && '...'}
+          </Text>
+          <Text style={styles.info}>{strAlcoholic}</Text>
+        </View>
       </View>
     </TouchableOpacity>
   );
@@ -17,21 +23,33 @@ export default function Drink({item, handlePress}) {
 
 const styles = StyleSheet.create({
   container: {
-    margin: 10,
     padding: 10,
-    borderRadius: 5,
-    backgroundColor: '#FFA500',
+    backgroundColor: 'white',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  textContainer: {
+    padding: 15,
+    display: 'flex',
+    marginRight: 100,
   },
   name: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 5,
   },
   instructions: {
     fontSize: 14,
+    marginTop: 5,
+    marginBottom: 5,
   },
   info: {
     fontSize: 14,
     fontStyle: 'italic',
+  },
+  image: {
+    width: '25%',
+    aspectRatio: 1,
+    borderRadius: 5,
   },
 });

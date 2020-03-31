@@ -33,5 +33,6 @@ export default function List({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'rgb(70,49,104)',
   },
 });
