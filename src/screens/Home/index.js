@@ -1,5 +1,7 @@
 import React, {useCallback} from 'react';
-import {View, Text, Image, StyleSheet, Platform, Button} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
+import LottieView from 'lottie-react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 export default function Home({navigation}) {
   const handlePress = useCallback(() => {
@@ -8,49 +10,54 @@ export default function Home({navigation}) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.welcome}>Cockt'app</Text>
-      <Image
+      <View style={styles.welcome}>
+        <Text style={styles.welcomeTitle1}>Cocktail</Text>
+        <Text style={styles.welcomeTitle2}>App</Text>
+      </View>
+      <LottieView
         style={styles.image}
-        source={{
-          uri:
-            'https://www.stickpng.com/assets/images/587e337f9686194a55adab7c.png',
-        }}
+        source={require('../../images/cocktail.json')}
+        autoPlay
+        loop
       />
-      <Text style={styles.platformText}>{platformText}</Text>
-      <Button onPress={handlePress} title="Discover our cocktails" />
+      <TouchableOpacity onPress={handlePress} style={styles.button}>
+        <Text>Discover our cocktails</Text>
+      </TouchableOpacity>
     </View>
   );
 }
-
-const platformText = Platform.select({
-  ios: 'iOS',
-  android: 'Android',
-});
-
-const platformTextColor = Platform.select({
-  ios: '#ff0000',
-  android: '#00ff00',
-});
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'rgb(200,200,200)',
   },
   welcome: {
-    fontSize: 20,
+    display: 'flex',
     textAlign: 'center',
+    flexDirection: 'row',
     margin: 10,
+    marginBottom: 20,
+  },
+  welcomeTitle1: {
+    fontSize: 26,
+    fontWeight: 'bold',
+    color: 'white',
+  },
+  welcomeTitle2: {
+    fontSize: 26,
+    color: 'rgb(251,64,82)',
+    fontWeight: 'bold',
   },
   image: {
-    width: '50%',
-    aspectRatio: 1,
-    resizeMode: 'contain',
+    width: '100%',
+    marginBottom: 20,
   },
-  platformText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: platformTextColor,
+  button: {
+    backgroundColor: 'white',
+    padding: 15,
+    borderRadius: 10,
   },
 });
