@@ -2,13 +2,14 @@ import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 
 export default function Drink({item, handlePress}) {
-  const {strDrink, strInstructions} = item;
+  const {strDrink, strInstructions, strAlcoholic} = item;
 
   return (
     <TouchableOpacity onPress={() => handlePress(item)}>
       <View style={styles.container}>
         <Text style={styles.name}>{strDrink}</Text>
         <Text style={styles.instructions}>{strInstructions}</Text>
+        <Text style={styles.info}>{strAlcoholic}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -19,7 +20,7 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 10,
     borderRadius: 5,
-    backgroundColor: '#08B6CE',
+    backgroundColor: '#FFA500',
   },
   name: {
     fontSize: 18,
@@ -28,5 +29,9 @@ const styles = StyleSheet.create({
   },
   instructions: {
     fontSize: 14,
+  },
+  info: {
+    fontSize: 14,
+    fontStyle: 'italic',
   },
 });
