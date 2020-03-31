@@ -16,7 +16,9 @@ export default function Drink({route, navigation}) {
   useEffect(() => {
     navigation.setOptions({title: item.strDrink});
     fetch(
-      `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${item.idDrink}`,
+      `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${
+        item.idDrink
+      }`,
     )
       .then(response => response.json())
       .then(json => {
@@ -79,7 +81,6 @@ export default function Drink({route, navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // justifyContent: 'center',
     alignItems: 'center',
     marginTop: 20,
   },
