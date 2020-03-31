@@ -1,14 +1,14 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 
-export default function Breed({item, handlePress}) {
-  const {name, description} = item;
+export default function Drink({item, handlePress}) {
+  const {strDrink, strInstructions} = item;
 
   return (
     <TouchableOpacity onPress={() => handlePress(item)}>
       <View style={styles.container}>
-        <Text style={styles.name}>{name}</Text>
-        <Text style={styles.description}>{description}</Text>
+        <Text style={styles.name}>{strDrink}</Text>
+        <Text style={styles.instructions}>{strInstructions}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 5,
   },
-  description: {
+  instructions: {
     fontSize: 14,
   },
 });
