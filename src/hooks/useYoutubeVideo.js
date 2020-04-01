@@ -8,12 +8,10 @@ export const useYoutubeVideo = cocktailName => {
   const store = useContext(Store);
   const {videosIds, setVideosIds} = store;
 
-  // remove default value
-  const [videoId, setVideoId] = useState('8DcW1BVlUvc');
+  const [videoId, setVideoId] = useState();
 
   useEffect(() => {
-    // remove true
-    if (!cocktailName || true) {
+    if (!cocktailName) {
       return;
     }
 
@@ -37,8 +35,7 @@ export const useYoutubeVideo = cocktailName => {
           console.error(json.error);
         }
 
-        // change video id by API response json.items[0].id.videoId
-        setVideosIds({...videosIds, [cocktailName]: '8DcW1BVlUvc'});
+        setVideosIds({...videosIds, [cocktailName]: json.items[0].id.videoId});
       })
       .catch(error => console.error(error));
   }, [cocktailName, setVideosIds, videosIds]);
