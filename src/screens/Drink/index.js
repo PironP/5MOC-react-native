@@ -33,15 +33,15 @@ export default function Drink({route, navigation}) {
             ? ingredients.reduce((acc, cur) => `${acc} ${cur},`).slice(0, -1)
             : 'No ingredient'}
         </Text>
+        {strAlcoholic === 'Non alcoholic' && (
+          <Image
+            style={styles.warning}
+            source={{
+              uri: 'https://www.sojennie.paris/img/cms/O_Alcool_EN.png',
+            }}
+          />
+        )}
       </View>
-      {strAlcoholic === 'Non alcoholic' && (
-        <Image
-          style={styles.warning}
-          source={{
-            uri: 'https://www.sojennie.paris/img/cms/O_Alcool_EN.png',
-          }}
-        />
-      )}
       <View style={styles.videoContainer}>
         {!videoId && <Text style={styles.content}>Loading video</Text>}
         {videoId && (
@@ -80,9 +80,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   warning: {
-    width: '30%',
+    width: '15%',
     aspectRatio: 1,
     resizeMode: 'contain',
+    alignSelf: 'flex-end',
   },
   image: {
     backgroundColor: 'rgb(225, 225, 225)',
