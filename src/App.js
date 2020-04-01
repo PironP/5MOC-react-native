@@ -11,17 +11,18 @@ const Stack = createStackNavigator();
 export const Store = React.createContext();
 
 export default function App() {
-  const [store, setStore] = useState({});
+  const [drinks, setDrinks] = useState({});
+  const [videosIds, setVideosIds] = useState({});
 
   useEffect(() => {
     fetch(`${COCKTAIL_API}?${queryString.stringify({f: 'a'})}`)
       .then(response => response.json())
-      .then(json => setStore({drinks: json.drinks}))
+      .then(json => setDrinks(json.drinks))
       .catch(error => console.error(error));
   }, []);
 
   return (
-    <Store.Provider value={store}>
+    <Store.Provider value={{drinks, videosIds, setVideosIds}}>
       <NavigationContainer>
         <Stack.Navigator
           screenOptions={{...TransitionPresets.SlideFromRightIOS}}>
