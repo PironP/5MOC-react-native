@@ -1,13 +1,24 @@
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useContext} from 'react';
 import queryString from 'query-string';
 import {YOUTUBE_API_KEY} from 'react-native-dotenv';
 import {YOUTUBE_API} from '../Constants';
+import {Store} from '../App';
 
 export const useYoutubeVideo = cocktailName => {
+  const store = useContext(Store);
+  const {videosIds, setVideosIds} = store;
+
+  // remove default value
   const [videoId, setVideoId] = useState('8DcW1BVlUvc');
 
   useEffect(() => {
+    // remove true
     if (!cocktailName || true) {
+      return;
+    }
+
+    if (videosIds[cocktailName]) {
+      setVideoId(videosIds[cocktailName]);
       return;
     }
 
@@ -26,10 +37,11 @@ export const useYoutubeVideo = cocktailName => {
           console.error(json.error);
         }
 
-        setVideoId(json.items[0].id.videoId);
+        // change video id by API response json.items[0].id.videoId
+        setVideosIds({...videosIds, [cocktailName]: '8DcW1BVlUvc'});
       })
       .catch(error => console.error(error));
-  }, [cocktailName]);
+  }, [cocktailName, setVideosIds, videosIds]);
 
   return videoId;
 };
