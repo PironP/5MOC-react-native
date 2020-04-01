@@ -1,18 +1,11 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useCallback, useContext} from 'react';
 import {View, StyleSheet, FlatList} from 'react-native';
-import queryString from 'query-string';
 import Drink from '../../components/Drink';
-import {COCKTAIL_API} from '../../Constants';
+import {Store} from '../../App';
 
 export default function List({navigation}) {
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    fetch(`${COCKTAIL_API}?${queryString.stringify({f: 'a'})}`)
-      .then(response => response.json())
-      .then(json => setData(json.drinks))
-      .catch(error => console.error(error));
-  }, []);
+  const store = useContext(Store);
+  const {drinks} = store;
 
   const handlePress = useCallback(
     item => {
@@ -23,11 +16,13 @@ export default function List({navigation}) {
 
   return (
     <View style={styles.container}>
-      <FlatList
-        data={data}
-        renderItem={values => <Drink {...values} handlePress={handlePress} />}
-        keyExtractor={item => item.idDrink}
-      />
+      {drinks && (
+        <FlatList
+          data={drinks}
+          renderItem={values => <Drink {...values} handlePress={handlePress} />}
+          keyExtractor={item => item.idDrink}
+        />
+      )}
     </View>
   );
 }
