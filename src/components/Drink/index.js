@@ -1,5 +1,6 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 export default function Drink({item, index, handlePress}) {
   const {strDrink, strInstructions, strAlcoholic, strDrinkThumb} = item;
@@ -9,7 +10,7 @@ export default function Drink({item, index, handlePress}) {
       {index === 0 && <View style={styles.fixPaddingTop} />}
       <TouchableOpacity onPress={() => handlePress(item)}>
         <View style={styles.container}>
-          <Image style={styles.image} source={{uri: strDrinkThumb}} />
+          <FastImage style={styles.image} source={{uri: strDrinkThumb}} />
           <View style={styles.textContainer}>
             <Text style={styles.name}>{strDrink}</Text>
             <Text style={styles.instructions}>
