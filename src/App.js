@@ -10,14 +10,19 @@ import {COCKTAIL_API} from './Constants';
 const Stack = createStackNavigator();
 export const Store = React.createContext();
 
+const urls = Array.from('abcde').map(
+  letter => `${COCKTAIL_API}?${queryString.stringify({f: letter})}`,
+);
+
 export default function App() {
   const [drinks, setDrinks] = useState({});
   const [videosIds, setVideosIds] = useState({});
 
   useEffect(() => {
-    fetch(`${COCKTAIL_API}?${queryString.stringify({f: 'a'})}`)
-      .then(response => response.json())
-      .then(json => setDrinks(json.drinks))
+    Promise.all(urls.map(url => fetch(url).then(response => response.json())))
+      .then(jsonArray =>
+        setDrinks(jsonArray.reduce((acc, cur) => [...acc, ...cur.drinks], [])),
+      )
       .catch(error => console.error(error));
   }, []);
 
