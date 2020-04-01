@@ -16,7 +16,7 @@ export default function List({navigation}) {
 
   return (
     <View style={styles.container}>
-      {drinks && (
+      {drinks.length > 0 && (
         <FlatList
           data={drinks}
           renderItem={values => <Drink {...values} handlePress={handlePress} />}
