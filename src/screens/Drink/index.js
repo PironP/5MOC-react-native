@@ -1,9 +1,10 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import YouTube from 'react-native-youtube';
 import {useYoutubeVideo} from '../../hooks/useYoutubeVideo';
 import {YOUTUBE_API_KEY} from 'react-native-dotenv';
 import {ScrollView} from 'react-native-gesture-handler';
+import FastImage from 'react-native-fast-image';
 
 export default function Drink({route, navigation}) {
   const {
@@ -25,7 +26,7 @@ export default function Drink({route, navigation}) {
   return (
     <ScrollView contentContainerStyle={styles.wrapperContainer}>
       <View style={styles.container}>
-        <Image style={styles.image} source={{uri: strDrinkThumb}} />
+        <FastImage style={styles.image} source={{uri: strDrinkThumb}} />
         <View style={styles.textContainer}>
           <Text style={styles.title}>How to</Text>
           <Text style={styles.content}>{strInstructions}</Text>
@@ -36,7 +37,7 @@ export default function Drink({route, navigation}) {
               : 'No ingredient'}
           </Text>
           {strAlcoholic === 'Non alcoholic' && (
-            <Image
+            <FastImage
               style={styles.warning}
               source={{
                 uri: 'https://www.sojennie.paris/img/cms/O_Alcool_EN.png',
