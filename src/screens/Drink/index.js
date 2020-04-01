@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, Image} from 'react-native';
 import YouTube from 'react-native-youtube';
 import {useYoutubeVideo} from '../../hooks/useYoutubeVideo';
 import {YOUTUBE_API_KEY} from 'react-native-dotenv';
+import {ScrollView} from 'react-native-gesture-handler';
 
 export default function Drink({route, navigation}) {
   const {
@@ -22,43 +23,48 @@ export default function Drink({route, navigation}) {
   navigation.setOptions({title: cocktailName});
 
   return (
-    <View style={styles.container}>
-      <Image style={styles.image} source={{uri: strDrinkThumb}} />
-      <View style={styles.textContainer}>
-        <Text style={styles.title}>How to</Text>
-        <Text style={styles.content}>{strInstructions}</Text>
-        <Text style={styles.title}>Ingredients</Text>
-        <Text style={styles.content}>
-          {ingredients.length > 0
-            ? ingredients.reduce((acc, cur) => `${acc} ${cur},`).slice(0, -1)
-            : 'No ingredient'}
-        </Text>
-        {strAlcoholic === 'Non alcoholic' && (
-          <Image
-            style={styles.warning}
-            source={{
-              uri: 'https://www.sojennie.paris/img/cms/O_Alcool_EN.png',
-            }}
-          />
-        )}
+    <ScrollView contentContainerStyle={styles.wrapperContainer}>
+      <View style={styles.container}>
+        <Image style={styles.image} source={{uri: strDrinkThumb}} />
+        <View style={styles.textContainer}>
+          <Text style={styles.title}>How to</Text>
+          <Text style={styles.content}>{strInstructions}</Text>
+          <Text style={styles.title}>Ingredients</Text>
+          <Text style={styles.content}>
+            {ingredients.length > 0
+              ? ingredients.reduce((acc, cur) => `${acc} ${cur},`).slice(0, -1)
+              : 'No ingredient'}
+          </Text>
+          {strAlcoholic === 'Non alcoholic' && (
+            <Image
+              style={styles.warning}
+              source={{
+                uri: 'https://www.sojennie.paris/img/cms/O_Alcool_EN.png',
+              }}
+            />
+          )}
+        </View>
+        <View style={styles.videoContainer}>
+          {!videoId && <Text style={styles.content}>Loading video</Text>}
+          {videoId && (
+            <YouTube
+              apiKey={YOUTUBE_API_KEY}
+              videoId={videoId}
+              style={styles.video}
+            />
+          )}
+        </View>
       </View>
-      <View style={styles.videoContainer}>
-        {!videoId && <Text style={styles.content}>Loading video</Text>}
-        {videoId && (
-          <YouTube
-            apiKey={YOUTUBE_API_KEY}
-            videoId={videoId}
-            style={styles.video}
-          />
-        )}
-      </View>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+  wrapperContainer: {
+    flexGrow: 1,
+  },
   container: {
-    flex: 1,
+    flexGrow: 1,
     alignItems: 'center',
     backgroundColor: 'rgb(245, 245, 245)',
   },
@@ -96,7 +102,8 @@ const styles = StyleSheet.create({
   videoContainer: {
     backgroundColor: 'black',
     width: '100%',
-    flex: 1,
+    flexGrow: 1,
+    minHeight: 240,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
